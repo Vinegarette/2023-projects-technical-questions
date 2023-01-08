@@ -9,69 +9,72 @@ import styles from "./Table.module.css";
 // !!!!!!!!!!!!!!!!!!!!
 
 interface AlertUpdate {
-  date: string,
-  update: string
+    date: string,
+    update: string
 }
 
 interface Alert {
-  alert: string,
-  status: string,
-  updates: AlertUpdate[]
+    alert: string,
+    status: string,
+    updates: AlertUpdate[]
 }
 
 export interface TableContents {
-  columnTitles: string[],
-  rowContents: Alert[]
+    columnTitles: string[],
+    rowContents: Alert[]
 }
 
 export default function Table() {
-  const [contents, useContents] = useState<TableContents>({
-    columnTitles: ['Alert', 'Status', 'Updates'],
-    rowContents: [
-      {
-        alert: 'food',
-        status: 'good!',
-        updates: []
-      },
-      {
-        alert: 'water',
-        status: 'low',
-        updates: [{ update: 'dropped to 10% below normal', date: '11/11/2022' }]
-      },
-      {
-        alert: 'shelter',
-        status: 'terrible :(',
-        updates: [{ update: 'slept on cold ground', date: '11/11/2022' }, { update: 'slept on hard concrete', date: '13/11/2022' }]
-      },
-      {
-        alert: 'Done!',
-        status: '<YOUR NAME>',
-        updates: []
-      }
-    ]
-  });
+    const [contents, useContents] = useState<TableContents>({
+        columnTitles: ['Alert', 'Status', 'Updates'],
+        rowContents: [
+            {
+                alert: 'food',
+                status: 'good!',
+                updates: []
+            },
+            {
+                alert: 'water',
+                status: 'low',
+                updates: [{ update: 'dropped to 10% below normal', date: '11/11/2022' }]
+            },
+            {
+                alert: 'shelter',
+                status: 'terrible :(',
+                updates: [{ update: 'slept on cold ground', date: '11/11/2022' }, { update: 'slept on hard concrete', date: '13/11/2022' }]
+            },
+            {
+                alert: 'Done!',
+                status: 'Richard Xue',
+                updates: []
+            }
+        ]
+    });
 
-  return (
-    <>
-      <AlertModal useContents={useContents} />
-      <div className={styles.myTable}>
-        <div className={styles.row}>
-          {contents.columnTitles.map((item) => <div className={styles.item} key={item}>{item}</div>)}
-        </div>
-        {contents.rowContents.map((content) => (
-          <div data-testid='row' className={styles.row}>
-            <div className={styles.item}>
-              {content.alert}
+    return (
+        <>
+            <AlertModal useContents={useContents} />
+            <div className={styles.myTable}>
+                <div className={styles.row}>
+                    {contents.columnTitles.map((item) => <div className={styles.item} key={item}>{item}</div>)}
+                </div>
+                {contents.rowContents.map((content) => (
+                    <div data-testid='row' className={styles.row}>
+                        <div className={styles.item}>
+                            {content.alert}
+                        </div>
+                        <div className={styles.item}>
+                            {content.status}
+                        </div>
+                        <div className={styles.item}>
+                            {content.updates.map(({ date, update }) => (
+                                [<div key={date + update}> {update} </div>, <div className={styles.date} key={update + date}> {date} </div>]
+                            ))}
+
+                        </div>
+                    </div>
+                ))}
             </div>
-            <div className={styles.item}>
-              {content.status}
-            </div>
-            <div className={styles.item}>
-              {/* TODO: add updates */}
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  )
+        </>
+    )
 }

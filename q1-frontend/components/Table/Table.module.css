@@ -18,3 +18,18 @@
     flex: 1 1 0px;
     flex-direction: column;
 }
+
+.update {
+    display: flex;
+    flex: 1 1 0px;
+    flex-direction: column;
+}
+
+.date {
+    display: flex;
+    flex: 1 1 0px;
+    flex-direction: column;
+    font-size: 6px;
+    color: red;
+    text-align: right;
+}
