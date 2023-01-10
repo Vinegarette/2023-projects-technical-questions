@@ -59,23 +59,14 @@ def create_entity():
             space_database.append(SpaceEntity(SpaceCowboy(metadata['name'], metadata['lassoLength']), location))
         elif type == 'space_animal':
             space_database.append(SpaceEntity(SpaceAnimal(metadata['type']), location))
-        
-        
-    return Response(status=200)
+    return dumps({"message" : "Successfully posted entities!"})
        
-
-@app.route('/list', methods=['GET'])
-def list_entities():
-    # For testing purposes...
-    return space_database
-
 # lasooable returns all the space animals a space cowboy can lasso given their name
 @app.route('/lassoable', methods=['GET'])
 def lassoable():
-    
-    info = request.get_json()
+
+    name = request.args.get("cowboy_name", type=str)
     # Search through the list of SpaceEntites 
-    name = info['cowboy_name']
     cowboy = [entity for entity in space_database if type(entity.metadata) == SpaceCowboy and entity.metadata.name == name]
     if len(cowboy) == 0:
         print(f"Failed to find a cowboy with name {name}")
@@ -97,7 +88,7 @@ def lassoable():
         })
     
     print({"space_animals" : res})
-    return Response(status=200)
+    return dumps({"space_animals" : res})
     
 
 # DO NOT TOUCH ME, thanks :D

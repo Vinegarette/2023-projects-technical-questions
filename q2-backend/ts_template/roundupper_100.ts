@@ -24,8 +24,7 @@ app.use(express.json());
 app.post('/entity', (req, res) => {
     const entities = req.body;
     spaceDatabase.push(...entities.entities);
-    res.status(200);
-    return res.send("Succesfully added entities to spaceDatabase!");
+    return res.json({ message: "Succesfully added entities to spaceDatabase!" });
 });
 
 // Helper function to determine if an animal is lassoable.
@@ -39,13 +38,13 @@ function is_lassoable(cowboy: spaceEntity, animal: spaceEntity): boolean {
 
 // lassoable returns all the space animals a space cowboy can lasso given their name
 app.get('/lassoable', (req, res) => {
-    // TODO: fill me in
-    const name = req.body.cowboy_name;
-    const cowboy: spaceEntity = spaceDatabase.find(entity => entity.type === "space_cowboy" && entity.metadata.name === name) as spaceEntity;
 
+
+    const name = req.query.cowboy_name;
+    const cowboy: spaceEntity = spaceDatabase.find(entity => entity.type === "space_cowboy" && entity.metadata.name === name) as spaceEntity;
     if (cowboy === undefined) {
         res.status(400);
-        return res.send(`No cowboy matching the given name ${name}`);
+        return res.json({ error: `No cowboy matching the given name ${name}` });
     }
 
     const animals: any[] = [];
@@ -60,8 +59,7 @@ app.get('/lassoable', (req, res) => {
 
     const result = { "space_animals": animals };
     console.log(result);
-    res.status(200);
-    return res.send("Bruh");
+    return res.json(result);
 })
 
 app.listen(8080);
